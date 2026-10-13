@@ -1,6 +1,7 @@
 /* ============================================================
    SIMULADOR TÁCTICO DE INVESTIGACIÓN CRIMINAL — app.js
    Detective Edition 2026 · Escenas + Dificultad + Imágenes
+   BASADO EN EL COPP 2021 Y MANUAL ÚNICO DE CADENA DE CUSTODIA 2017
    ============================================================ */
 
 'use strict';
@@ -16,7 +17,7 @@ const STATE = {
   score: 0,                // puntaje total
   sceneScore: 0,           // puntaje de la escena en curso
   scenesResults: [],       // {sceneId, sceneTitle, correct, pts, maxPts, diff}
-  custodyLog: [],          // registro de cadena de custodia
+  custodyLog: [],          // registro de cadena de custodia (PRCC)
   questionsAnswered: [],   // {text, correct, chosenIdx, correctIdx}
 };
 
@@ -45,7 +46,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Protocolo fotográfico en tres tiempos:</strong> El estándar forense requiere: (1) plano general para situar el indicio en la escena, (2) plano medio para contexto inmediato, y (3) macro 1:1 a 90° con escala ABFO colocada en el mismo plano focal para registro métrico fiel. El flash lateral a 45° puede usarse para revelar huellas en superficie no porosa, pero jamás sin escala métrica.',
-        custody: '📸 Fotografía forense registrada — folio FOCAD-A1. Indicio N° 001 documentado en tres planos.',
+        custody: '📸 Fotografía forense registrada — folio FOCAD-A1. Indicio N° 001 documentado en tres planos. Se ha llenado el campo de Fijación en la PRCC.',
         pts: 10
       },
       {
@@ -60,7 +61,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Polvo magnético en superficies no porosas metálicas:</strong> La ninhidrina y el DFO reaccionan con aminoácidos, pero son técnicas para sustratos porosos (papel, cartón). El cianocrilato es excelente pero requiere laboratorio. En campo, sobre superficies no porosas lisas como aluminio, el polvo magnético negro con vara magnética es la primera elección porque no hay contacto mecánico que distorsione la huella. El rodamina 6G se aplica DESPUÉS del cianocrilato para fluorescencia.',
-        custody: '🔍 Revelado físico realizado — Polvo magnético negro. Indicio N° 001 levantado con cinta adhesiva forense.',
+        custody: '🔍 Revelado físico realizado — Polvo magnético negro. Indicio N° 001 levantado con cinta adhesiva forense. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -75,7 +76,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Técnica del doble hisopo (doble swab):</strong> El protocolo estándar para manchas biológicas secas en superficies no porosas o semi-porosas incluye: (1) hisopo N°1 humedecido con agua bidestilada estéril para rehidratar y disolver células, (2) hisopo N°2 seco aplicado inmediatamente para absorber la solución celular. Esto maximiza la recuperación de ADN. Embalar en sobre de papel permeable para que la humedad residual no genere hongos que degraden el ADN.',
-        custody: '🧬 Muestra biológica colectada — Técnica doble hisopo. Indicio N° 002 refrigerado a 4°C. Cadena de frío iniciada.',
+        custody: '🧬 Muestra biológica colectada — Técnica doble hisopo. Indicio N° 002 refrigerado a 4°C. Cadena de frío iniciada. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -89,8 +90,8 @@ const SCENES = [
           'Colocar todos los fragmentos en frasco de vidrio con tapa de rosca, precintado.'
         ],
         correct: 1,
-        fb: '<strong>Embalaje de fragmentos vítreos para correlación física:</strong> Los vidrios fracturados pueden correlacionarse físicamente (jigsaw fit) para reconstruir la dirección del golpe y el mecanismo del ingreso. Para esto, cada fragmento debe embalarse individualmente en papel kraft —nunca juntos— para evitar que nuevas fracturas artificiales comprometan la correlación. La caja rígida con relleno EPS previene el movimiento y nuevas rupturas durante el transporte.',
-        custody: '🔺 Vidrios fracturados embalados — 7 fragmentos individuales en caja rígida. Indicio N° 003. Correlación física posible.',
+        fb: '<strong>Embalaje de fragmentos vítreos para correlación física:</strong> Los vidrios fracturados pueden correlacionarse físicamente (jigsaw fit) para reconstruir la dirección del golpe y el mecanismo del ingreso. Para esto, cada fragmento debe embalarse individualmente en papel kraft —nunca juntos— para evitar que nuevas fracturas artificiales comprometan la correlación. La caja rígida con relleno EPS previene el movimiento y nuevas rupturas durante el transporte. El manual único prohíbe bolsas plásticas para estos fines.',
+        custody: '🔺 Vidrios fracturados embalados — 7 fragmentos individuales en caja rígida. Indicio N° 003. Correlación física posible. Rotulado y registrado en PRCC.',
         pts: 10
       },
       {
@@ -104,8 +105,8 @@ const SCENES = [
           'Sellar con cera lacre y rubricar solo al finalizar el turno de guardia.'
         ],
         correct: 2,
-        fb: '<strong>Sellado y transferencia de custodia:</strong> El principio rector es la "continuidad de custodia" (chain of custody). Cada transferencia debe documentarse de forma que cualquier intermediario pueda ser identificado. El precinto tamper-evident revela manipulación posterior. La firma cruzando precinto y embalaje garantiza que el sello no fue movido. El FOCAD-07 es el formulario oficial de transferencia con: horario, temperatura ambiente, identificación del destinatario y descripción del estado del embalaje.',
-        custody: '🔒 Sellos tamper-evident aplicados. Formulario FOCAD-07 completado. Cadena de custodia cerrada para Caso 01.',
+        fb: '<strong>Sellado y transferencia de custodia:</strong> El principio rector es la "continuidad de custodia" (chain of custody). Cada transferencia debe documentarse de forma que cualquier intermediario pueda ser identificado. El precinto tamper-evident revela manipulación posterior. La firma cruzando precinto y embalaje garantiza que el sello no fue movido. El FOCAD-07 es el formulario oficial de transferencia con: horario, temperatura ambiente, identificación del destinatario y descripción del estado del embalaje. El Manual Único exige que la PRCC acompañe siempre a la evidencia.',
+        custody: '🔒 Sellos tamper-evident aplicados. Formulario FOCAD-07 completado. Cadena de custodia cerrada para Caso 01. PRCC actualizada.',
         pts: 10
       }
     ],
@@ -122,7 +123,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>RTI (Reflectance Transformation Imaging):</strong> Es la técnica más avanzada para superficies con relieve complejo. Un domo semiesférico con múltiples LEDs ilumina la huella desde diferentes ángulos secuencialmente. El software (PTM/HSH) reconstruye matemáticamente la geometría superficial a nivel de micras, revelando minucias que la fotografía convencional pierde. La iluminación coaxial elimina sombras pero no resuelve la distorsión geométrica 3D. El HDR mejora el rango dinámico, no la geometría.',
-        custody: '📸 RTI realizado — 64 capturas multipunto. Mapa de relieve superficial generado. Indicio N° 001.',
+        custody: '📸 RTI realizado — 64 capturas multipunto. Mapa de relieve superficial generado. Indicio N° 001. Fijación fotográfica registrada en PRCC.',
         pts: 20
       },
       {
@@ -137,7 +138,7 @@ const SCENES = [
         ],
         correct: 0,
         fb: '<strong>Secuencia multi-reactivo para poroso húmedo:</strong> El principio es ir de lo menos destructivo a lo más destructivo, preservando materia para siguiente etapa. DFO (reacción con aminoácidos, fluorescencia 570nm) es la primera elección en húmedo; luego Ninhidrina (reacciona con grupos amino que DFO no agotó); después 1,8-Diazafluoren-9-one para huellas más antiguas. El Physical Developer actúa sobre grasas no solubles en agua, es la última etapa porque destruye las anteriores. Esta secuencia permite detectar huellas de distintas personas que usan diferentes sudores (sebáceo vs. acuoso).',
-        custody: '🔬 Revelado secuencial realizado — 4 técnicas aplicadas. Dos perfiles distintos identificados en el indicio.',
+        custody: '🔬 Revelado secuencial realizado — 4 técnicas aplicadas. Dos perfiles distintos identificados en el indicio. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -152,7 +153,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>MiniFiler para ADN degradado:</strong> Cuando el ADN está degradado, las cadenas largas están fragmentadas. Los amplicons grandes (> 400 pb de PowerPlex Fusion) simplemente no amplificarán. MiniFiler usa primers que generan amplicons < 200 pb, diseñados específicamente para trabajar con fragmentos cortos. El WGA amplifica indiscriminadamente ADN muy degradado o dañado, introduciendo artefactos. El NGS de ADN mitocondrial es útil pero no permite individualización (es matrilineal). La combinación MiniFiler + limpieza IQ/Survivor maximiza el rendimiento.',
-        custody: '🧬 Muestra enviada a lab genética con nota de degradación. Kit MiniFiler autorizado. Indicio N° 002.',
+        custody: '🧬 Muestra enviada a lab genética con nota de degradación. Kit MiniFiler autorizado. Indicio N° 002. Registro en PRCC de derivación.',
         pts: 20
       },
       {
@@ -167,7 +168,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>LA-ICP-MS como gold standard en vidrios forenses:</strong> El RI (GRIM3) distingue vidrios de composición similar pero no diferencia lotes de la misma fábrica. El SEM-EDS es semicuantitativo y solo detecta elementos mayoritarios. La Raman mide tensión estructural, útil para tipo de vidrio (recocido vs. templado) pero no para origen. LA-ICP-MS con 40+ elementos traza (Ba, Sr, Zr, Ce, La, REE...) tiene un poder discriminante > 99.99% para distinguir vidrios del mismo fabricante con diferente lote de producción, que es exactamente lo requerido.',
-        custody: '🔺 Fragmentos enviados a espectrometría LA-ICP-MS. 7 muestras + 1 control de vidrio del mercado. Indicio N° 003.',
+        custody: '🔺 Fragmentos enviados a espectrometría LA-ICP-MS. 7 muestras + 1 control de vidrio del mercado. Indicio N° 003. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -182,7 +183,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Sanación de la cadena de custodia:</strong> En la mayoría de los sistemas procesales modernos (incluyendo sistemas latinoamericanos con Código Procesal Penal adversarial), una omisión documental aislada no es causal automática de inadmisibilidad. El principio es la "integridad de la evidencia". Si se puede demostrar por otros medios (affidávit, registros biométricos de acceso, CCTV del laboratorio, auditoría de temperatura de la cámara frigorífica) que la evidencia no fue manipulada durante ese período, el juez puede decidir admitirla con la explicación correspondiente. La defensa deberá demostrar manipulación real, no meramente la posibilidad teórica de la misma.',
-        custody: '⚠️ ALERTA CADENA: Vacío documental detectado. Affidávit iniciado. Bitácora electrónica solicitada al laboratorio.',
+        custody: '⚠️ ALERTA CADENA: Vacío documental detectado. Affidávit iniciado. Bitácora electrónica solicitada al laboratorio. PRCC en revisión.',
         pts: 20
       }
     ]
@@ -208,7 +209,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Triple acordonamiento en escena exterior:</strong> La secuencia correcta es PRIMERO PROTEGER, LUEGO DOCUMENTAR. En suelo húmedo, cada segundo suma pisadas de contaminación. El triple cordón es: (1) cinta interna que circunda solo el cadáver y las evidencias críticas; (2) cinta de tránsito para personal forense autorizado; (3) cinta exterior para contención de curiosos y prensa. Solo se establece un punto de entrada/salida único documentado. Las entrevistas son importantes pero posteriores a la protección del suelo.',
-        custody: '🚨 Acordonamiento establecido — Triple perímetro. Acceso controlado. Registro de ingreso de personal iniciado.',
+        custody: '🚨 Acordonamiento establecido — Triple perímetro. Acceso controlado. Registro de ingreso de personal iniciado. Anotado en PRCC.',
         pts: 10
       },
       {
@@ -223,7 +224,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Protocolo de vaciado de huellas en barro húmedo:</strong> La laca fijadora estabiliza las paredes de la huella antes del vaciado, evitando que el yeso al verterse desmorone los bordes. El yeso dental piedra Clase III (hemihydrato β) es el estándar porque logra una dureza Shore A de 80+ y reproduce detalles < 0.5mm. El yeso París común es más blando y menos fiel. El plástico acumula agua y destruye la huella. Levantar el barro sin vaciado previo destruye la impresión 3D. Tiempo de fraguado: 30-45 minutos.',
-        custody: '👣 Vaciado en yeso dental Clase III realizado — 3 huellas. Fotografía métrica previa. Indicio N° 004-006.',
+        custody: '👣 Vaciado en yeso dental Clase III realizado — 3 huellas. Fotografía métrica previa. Indicio N° 004-006. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -237,8 +238,8 @@ const SCENES = [
           'Levantar el cuchillo con pinzas por la hoja y colocarlo en tubo de cartón sellado.'
         ],
         correct: 1,
-        fb: '<strong>Embalaje de arma blanca con evidencia dual:</strong> El plástico genera humedad condensada que degrada el ADN sanguíneo (la sangre seca en plástico desarrolla hongos en 48h). El papel kraft es permeable y permite transpiración. Inmovilizar con bridas plásticas en zonas no críticas (talón del mango) evita que la hoja de la arma corte el embalaje y que el arma roce superficies que destruyan las huellas. Nunca tomar por el mango (zona de huellas) ni por el filo (riesgo de herida y contaminación).',
-        custody: '🔪 Cuchillo embalado — Caja rígida con bridas. Mango y hoja protegidos individualmente. Indicio N° 007.',
+        fb: '<strong>Embalaje de arma blanca con evidencia dual:</strong> El plástico genera humedad condensada que degrada el ADN sanguíneo (la sangre seca en plástico desarrolla hongos en 48h). El papel kraft es permeable y permite transpiración. Inmovilizar con bridas plásticas en zonas no críticas (talón del mango) evita que la hoja de la arma corte el embalaje y que el arma roce superficies que destruyan las huellas. Nunca tomar por el mango (zona de huellas) ni por el filo (riesgo de herida y contaminación). El manual único exige precintado y rotulado.',
+        custody: '🔪 Cuchillo embalado — Caja rígida con bridas. Mango y hoja protegidos individualmente. Indicio N° 007. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -253,7 +254,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Pelo con bulbo anágeno — ADN nuclear:</strong> El folículo en fase anágena (crecimiento activo) contiene células nucleadas con ADN nuclear de doble hebra, lo que permite generar un perfil STR completo de 20+ loci para individualización. El pelo sin bulbo (fase catágena/telógena) solo tiene ADN mitocondrial (matrilineal, no individualizante). Las pinzas sin punta dentada no cortan las células del bulbo. El etanol preserva el ADN pero destruye la morfología del pelo para análisis tricológico. El sobre de papel permite transpiración y evita degradación fúngica.',
-        custody: '🧬 Pelo con bulbo anágeno — Perfil STR posible. Pinzas planas utilizadas. Sobre de papel. Indicio N° 008.',
+        custody: '🧬 Pelo con bulbo anágeno — Perfil STR posible. Pinzas planas utilizadas. Sobre de papel. Indicio N° 008. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -268,7 +269,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Bolsas de papel en manos de cadáver:</strong> El papel kraft transpirable previene la acumulación de humedad que provocaría maceración cutánea y degradación de ADN. Las bolsas plásticas generan condensación y hongos. Las gasas húmedas favorecen la contaminación fúngica y la migración celular. El material subungueal (bajo las uñas) es de altísima prioridad: puede contener células epiteliales del agresor (ADN), fibras de su ropa, y la posición de los dedos puede indicar mecanismo de defensa. El hilo de algodón no daña los tejidos blandos como lo haría la cinta adhesiva.',
-        custody: '✋ Manos protegidas con bolsas de papel. Material subungueal preservado. Cadáver trasladado a morgue. Caso 02 cerrado.',
+        custody: '✋ Manos protegidas con bolsas de papel. Material subungueal preservado. Cadáver trasladado a morgue. Acta de Levantamiento y PRCC cerrada. Caso 02 cerrado.',
         pts: 10
       }
     ],
@@ -285,7 +286,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Enfoque multidisciplinario para locus delicti:</strong> Ningún método aislado es suficiente. La reconstrucción requiere: (1) fotogrametría para posición exacta del cuerpo; (2) análisis de livores (fijados > 8-12h) para posición original del deceso; (3) entomología del suelo original (huevos, larvas L1 de Calliphora) que solo eclosionan donde hubo cadáver; (4) búsqueda de "satelización" — evidencias pequeñas irradiadas desde el punto de muerte original por el arrastre. La temperatura central solo estima tiempo, no ubicación.',
-        custody: '🗺️ Análisis multidisciplinario activado — Fotogrametría + Entomología + Suelo. Caso de movimiento post-mortem.',
+        custody: '🗺️ Análisis multidisciplinario activado — Fotogrametría + Entomología + Suelo. Caso de movimiento post-mortem. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -300,7 +301,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Protocolo integrado para pisada en sustrato mixto:</strong> La clave es que la pisada es una unidad de evidencia aunque esté en dos sustratos. La gelatina amarilla BVDA es el mejor levantador para huellas 2D en asfalto (recoge hasta 0.1mm de detalle). El revelado con polvo magnético previo en asfalto aumenta el contraste. La fotogrametría de ambas partes por separado y su fusión 3D por software permite reconstruir la huella completa. La extrapolación por simetría NO es admisible como evidencia individualizable.',
-        custody: '👣 Pisada mixta levantada — Gelatina BVDA + Dental Stone. Fusión fotogramétrica 3D realizada. Indicio N° 004.',
+        custody: '👣 Pisada mixta levantada — Gelatina BVDA + Dental Stone. Fusión fotogramétrica 3D realizada. Indicio N° 004. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -315,7 +316,7 @@ const SCENES = [
         ],
         correct: 0,
         fb: '<strong>Reconstrucción por trayecto de herida:</strong> Un trayecto oblicuo de superior-a-inferior y posterior-a-anterior en flanco derecho indica: el arma entró por la espalda derecha con dirección hacia adelante y hacia abajo. Esto posiciona al agresor detrás y por arriba (o la víctima inclinada hacia adelante). Si el agresor fuera diestro, la trayectoria de derecha a izquierda del cuerpo también es consistente. Si la víctima estuviera arrodillada de frente, el trayecto sería anterior-posterior. Si estuviera boca abajo, la dirección dorsal a ventral sin componente oblicuo-anterior sería diferente.',
-        custody: '🔬 Análisis de trayecto de herida documentado. Correlación con posición de huellas de calzado del agresor.',
+        custody: '🔬 Análisis de trayecto de herida documentado. Correlación con posición de huellas de calzado del agresor. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -330,7 +331,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Probabilistic Genotyping (PG) para mezclas:</strong> El análisis manual de mezclas complejas está sujeto a sesgo interpretativo. Los softwares de genotipado probabilístico (STRmix, TrueAllele, ArmedXpert) modelan el proceso de PCR, la estocástica de bajas plantillas, drop-in y drop-out alélico, y calculan un LR bayesiano que compara H_p: sospechoso contribuyó vs. H_d: persona no relacionada contribuyó. Este es el estándar internacional ISFG/SWGDAM para mezclas. El modelo binario simple es inadmisible para mezclas complejas en tribunales que aplican estándar Daubert.',
-        custody: '🧬 Mezcla compleja de ADN — STRmix activado. LR bayesiano en cálculo. Hipótesis Fiscal/Defensa formuladas.',
+        custody: '🧬 Mezcla compleja de ADN — STRmix activado. LR bayesiano en cálculo. Hipótesis Fiscal/Defensa formuladas. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -345,7 +346,7 @@ const SCENES = [
         ],
         correct: 3,
         fb: '<strong>Integración multi-método para PMI:</strong> La regla del 1°C/hora es una aproximación burda que ignora las variables de enfriamiento no lineal (zona de plateau inicial, efecto de ropa, peso corporal, corrientes de aire). El nomograma de Henssge (con corrección por peso) es más preciso pero tiene ±2-3h de error. El rigor completo sugiere > 6-12h pero varía por temperatura y actividad muscular previa. El livor fijo > 8-12h. La entomología puede precisar a ±1h para muertes > 24h. Solo la INTEGRACIÓN de todos los métodos disponibles con sus respectivos intervalos de confianza es admisible para dar una estimación defensible en tribunal.',
-        custody: '⏱️ PMI multi-método calculado. Nomograma de Henssge + Rigor + Livor integrados. Entomólogo forense convocado.',
+        custody: '⏱️ PMI multi-método calculado. Nomograma de Henssge + Rigor + Livor integrados. Entomólogo forense convocado. Registrado en PRCC.',
         pts: 20
       }
     ]
@@ -371,7 +372,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Parámetros para reconstrucción de velocidad por frenada:</strong> La fórmula básica es V = √(2 × µ × g × d), donde µ es el coeficiente de fricción dinámica de la calzada, g = 9.81 m/s², y d = longitud de la huella. El µ varía: asfalto seco ~0.75, asfalto húmedo ~0.45, adoquín ~0.50. Un error del 10% en µ se traduce en ~5% de error en velocidad. El decelerómetro o el "drag sled" permiten medir µ directamente en el punto del accidente. Sin µ real medido, la reconstrucción de velocidad no es admisible ante tribunal.',
-        custody: '🚗 Huellas de frenada documentadas — 28.4m + coeficiente de fricción µ=0.68 medido. Indicio N° 009.',
+        custody: '🚗 Huellas de frenada documentadas — 28.4m + coeficiente de fricción µ=0.68 medido. Indicio N° 009. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -386,7 +387,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Recolección de transferencia de pintura:</strong> Las escamas de pintura automotriz tienen capas de hasta 5 estratos (imprimación fosfatada, base electrodepositada, sellador, base color, barniz clear coat). La espátula plástica estéril evita contaminación metálica. El sobre de papel glassine (semitransparente, sin adhesivos) permite examinar el contenido sin manipularlo. Nunca se usa cinta adhesiva porque los adhesivos contaminan la muestra con compuestos orgánicos que interfieren con GC-MS y micro-FTIR. La aspiración puede mezclar partículas de distintos vehículos.',
-        custody: '🎨 Escamas de pintura recolectadas — Espátula plástica + papel glassine. Estratigrafía preservada. Indicio N° 010.',
+        custody: '🎨 Escamas de pintura recolectadas — Espátula plástica + papel glassine. Estratigrafía preservada. Indicio N° 010. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -401,7 +402,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Valor individualizable del aceite de motor:</strong> El aceite de motor en servicio tiene una "firma química" única determinada por: (a) marca y tipo del aceite base, (b) paquete de aditivos (ZDDP, detergentes, dispersantes), (c) degradación termoxidativa por horas de servicio, y (d) contaminación metálica por desgaste de pistones, cojinetes y árboles de levas (Fe, Al, Cu, Pb en ppm). La comparación por GC-MS y ICP-OES puede individualizar el aceite del asfalto con el del cárter del vehículo imputado. El frasco de vidrio ámbar (borosilicato) evita migración de plastificantes que contaminarían el análisis.',
-        custody: '🛢️ Aceite de motor recolectado — Frasco vidrio ámbar 20mL. Muestra cárter del vehículo solicitada. Indicio N° 011.',
+        custody: '🛢️ Aceite de motor recolectado — Frasco vidrio ámbar 20mL. Muestra cárter del vehículo solicitada. Indicio N° 011. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -416,7 +417,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Tubo gris NaF/K₂Oxalato para etilemia:</strong> El fluoruro de sodio (NaF) inhibe la glicolisis bacteriana que produciría etanol endógeno post-extracción, falsando el resultado al alza. El oxalato de potasio anticoagula sin reaccionar con etanol. NUNCA usar alcohol como antiséptico porque puede contaminar la piel y elevar artificialmente la concentración detectada. La Betadine o clorhexidina acuosa son alternativas válidas. El tubo debe llenarse completamente (vacío mínimo < 15%) para reducir el espacio de cabeza (headspace) que afecta la concentración. El análisis por cromatografía de gases headspace (GC-HS) es el método de referencia.',
-        custody: '🩸 Dosaje etílico realizado — Tubo gris NaF+K₂Ox. Betadine como antiséptico. Cadena de frío. Indicio N° 012.',
+        custody: '🩸 Dosaje etílico realizado — Tubo gris NaF+K₂Ox. Betadine como antiséptico. Cadena de frío. Indicio N° 012. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -430,8 +431,8 @@ const SCENES = [
           'Sellar únicamente las puertas del conductor y solicitar al depósito que lleve el control del vehículo.'
         ],
         correct: 1,
-        fb: '<strong>Precintado forense de vehículo secuestrado:</strong> El vehículo es una "escena del crimen móvil". El kilometraje inicial documentado impide que aleguen que fue movido. Los sellos tamper-evident numerados en TODAS las aperturas (4 puertas, capó, portamaletas, tapa de combustible) permiten detectar acceso no autorizado posterior. La numeración secuencial de cada sello permite saber si un sello fue reemplazado. El acta de secuestro debe incluir: fecha/hora, condición visual de los sellos, número de cada sello, firma del agente y del depositario.',
-        custody: '🚨 Vehículo precintado — 7 sellos tamper-evident numerados. Km inicial: 87.432. Acta de secuestro firmada. Caso 03 cerrado.',
+        fb: '<strong>Precintado forense de vehículo secuestrado:</strong> El vehículo es una "escena del crimen móvil". El kilometraje inicial documentado impide que aleguen que fue movido. Los sellos tamper-evident numerados en TODAS las aperturas (4 puertas, capó, portamaletas, tapa de combustible) permiten detectar acceso no autorizado posterior. La numeración secuencial de cada sello permite saber si un sello fue reemplazado. El acta de secuestro debe incluir: fecha/hora, condición visual de los sellos, número de cada sello, firma del agente y del depositario. Se debe registrar en la PRCC.',
+        custody: '🚨 Vehículo precintado — 7 sellos tamper-evident numerados. Km inicial: 87.432. Acta de secuestro firmada. Caso 03 cerrado. PRCC cerrada.',
         pts: 10
       }
     ],
@@ -448,7 +449,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Fotogrametría forense para velocimetría en CCTV:</strong> La distorsión de perspectiva en cámaras de vigilancia es compleja (radial, tangencial, skew). La corrección por factor de fabricante es una generalización que no considera el estado real de la óptica. El método riguroso requiere: (1) calibración de la cámara in situ con GCPs (puntos de control terrestres) con coordenadas medidas con GPS RTK; (2) ajuste del modelo de distorsión (Lensfun o OpenCV); (3) rectificación ortofotográfica; (4) medición de velocidad en el espacio objeto corregido. Las huellas de frenada completan la reconstrucción pero no son admisibles como único método si el video está disponible.',
-        custody: '📹 Calibración fotogramétrica de CCTV realizada. 12 GCPs medidos. Velocidad corregida calculada. Indicio N° 009.',
+        custody: '📹 Calibración fotogramétrica de CCTV realizada. 12 GCPs medidos. Velocidad corregida calculada. Indicio N° 009. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -463,7 +464,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Py-GC-MS para imprimaciones no identificadas en PDQ:</strong> La base de datos PDQ (RCMP) cubre principalmente vehículos norteamericanos y algunas marcas europeas. Vehículos de importación o con reparaciones previas de carrocería (repintados) pueden tener imprimaciones no indexadas. La pirolisis acoplada a GC-MS fragmenta las macromoléculas poliméricas de las resinas de imprimación (alquídicas, epoxídicas, poliésteres) en monómeros y oligómeros característicos identificables en bibliotecas NIST. Esto supera las limitaciones del PDQ y permite comparar marcas de imprimación independientemente de la base de datos vehicular.',
-        custody: '🎨 Py-GC-MS solicitado — 5 estratos documentados. Imprimación no en PDQ — análisis alternativo activado. Indicio N° 010.',
+        custody: '🎨 Py-GC-MS solicitado — 5 estratos documentados. Imprimación no en PDQ — análisis alternativo activado. Indicio N° 010. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -478,7 +479,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Distancia de Mahalanobis en comparación multivariada de aceites:</strong> La diferencia porcentual simple no tiene en cuenta la varianza de medición ni la correlación entre las variables (los metales de desgaste no son independientes). El ANOVA compara grupos, no pares de muestras individuales. La distancia de Mahalanobis en el espacio PCA es el método correcto: proyecta ambas muestras en el espacio de componentes principales (que captura la varianza real del sistema), y mide la distancia geométrica normalizada por la varianza del laboratorio. Si d_M < 2 (95% CI), las muestras son estadísticamente indistinguibles y la coincidencia es informable.',
-        custody: '🛢️ Análisis PCA + Mahalanobis completado. Distancia estadística calculada. Informe de coincidencia emitido. Ind. N° 011.',
+        custody: '🛢️ Análisis PCA + Mahalanobis completado. Distancia estadística calculada. Informe de coincidencia emitido. Ind. N° 011. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -493,7 +494,7 @@ const SCENES = [
         ],
         correct: 3,
         fb: '<strong>Ratio sangre:orina para fase de absorción/eliminación:</strong> Si la defensa alega consumo post-accidente, la clave es determinar la fase cinética en el momento del accidente. Si BAC > AOr/1.3, el individuo estaba en fase de absorción (el etanol aún se absorbía, lo que contradice consumo reciente de alta dosis pre-muestreo). Si AOr/1.3 > BAC, estaba en eliminación (bebió hace tiempo). La retroproyección con Widmark estándar (0.15 g/L/h) tiene ±40% de error por variabilidad inter-individual. La segunda muestra para calcular la tasa REAL de eliminación del paciente específico es más precisa, pero el ratio sangre:orina responde directamente la pregunta de la defensa.',
-        custody: '🩸 Análisis de orina solicitado — Ratio sangre:orina para determinar fase cinética. Retroproyección con tasa real en proceso.',
+        custody: '🩸 Análisis de orina solicitado — Ratio sangre:orina para determinar fase cinética. Retroproyección con tasa real en proceso. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -508,7 +509,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Huellas post-impacto y dolo en siniestro vial:</strong> Las huellas de frenada que inician DESPUÉS del punto de impacto indican que el conductor no intentó detenerse antes del choque. Existen dos interpretaciones: (1) el conductor no vio a la víctima (imprudencia/negligencia) o (2) el conductor eligió no frenar antes del impacto (dolo). La distancia de inicio de frenada posterior al impacto + velocidad calculada + videos de CCTV + análisis de EDR (Event Data Recorder, "caja negra") del vehículo integran la evidencia para determinar la intencionalidad. El EDR registra aceleración, frenada y velocidad en los 5 segundos previos al evento.',
-        custody: '🚗 Análisis de EDR solicitado. Hipótesis dolosa documentada. Huellas post-impacto correlacionadas. Caso 03 cerrado.',
+        custody: '🚗 Análisis de EDR solicitado. Hipótesis dolosa documentada. Huellas post-impacto correlacionadas. Caso 03 cerrado. PRCC cerrada.',
         pts: 20
       }
     ]
@@ -534,7 +535,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Proceso ACE-V y número de minucias:</strong> No existe un número universal; varía por sistema jurídico (8 en Francia, 12 en INTERPOL, 16 en algunos estados de EE.UU., ningún mínimo establecido en UK). Lo más importante es el proceso ACE-V: (A)nálisis de la calidad de la huella, (C)omparación sistemática de minucias, (E)valuación del perito sobre la concordancia/discordancia, y (V)erificación por un segundo perito ciego. El AFIS es una herramienta de preselección, no el dictamen final.',
-        custody: '🔍 AFIS — 14 minucias concordantes. ACE-V iniciado por dactiloscopista. Verificación ciega en proceso.',
+        custody: '🔍 AFIS — 14 minucias concordantes. ACE-V iniciado por dactiloscopista. Verificación ciega en proceso. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -549,7 +550,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Reporte forense de ADN con LR:</strong> El perito forense NUNCA dice "100% del sospechoso" porque no es científicamente posible —solo inferiría culpabilidad, que es función del juez, no del perito. El perito reporta: (1) concordancia del perfil, (2) el RMP (Random Match Probability) como probabilidad de coincidencia aleatoria, (3) el LR (Likelihood Ratio) como peso de evidencia bayesiano. El lenguaje debe ser estadístico y neutral. Afirmar culpabilidad es una transgresión ética grave del rol pericial.',
-        custody: '🧬 Informe STR emitido con LR=10¹³. Lenguaje estadístico neutro. Dictamen pericial firmado por genetista forense.',
+        custody: '🧬 Informe STR emitido con LR=10¹³. Lenguaje estadístico neutro. Dictamen pericial firmado por genetista forense. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -564,7 +565,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Terminología AFTE en balística forense:</strong> La Association of Firearm and Toolmark Examiners (AFTE) establece cuatro niveles de conclusión: (1) Identified (Same gun), (2) Consistent (Compatible), (3) Inconclusive, (4) Eliminated. Las marcas de CLASE (diseño del percutor) son comunes a todas las armas del mismo modelo. Las marcas de SUBCLASE y de INDIVIDUO (estrías microscópicas únicas por el proceso de manufactura y desgaste) permiten la identificación. El perito aplica el proceso AFTE de comparación y reporta el nivel de conclusión apropiado, nunca "certeza absoluta".',
-        custody: '🔫 Comparación balística concluida — Concordancia AFTE: "Consistent with same firearm". Informe emitido.',
+        custody: '🔫 Comparación balística concluida — Concordancia AFTE: "Consistent with same firearm". Informe emitido. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -579,7 +580,7 @@ const SCENES = [
         ],
         correct: 0,
         fb: '<strong>GSR (Gunshot Residue) por SEM-EDS:</strong> Las partículas esferoidales de GSR se forman por la condensación rápida de los vapores generados por la deflagración de la pólvora (Pb-estifnato, Ba-nitrato, Sb₂S₃ del fulminante de cápsula). La morfología esferoidal es diagnóstica del proceso de condensación a > 2000°C. La composición trinaria Pb+Ba+Sb es altamente específica de GSR (probabilidad de ocurrencia ambiental < 0.001%). La interpretación correcta es: "disparó" o "estuvo en el entorno inmediato de un disparo" o "manipuló el arma o la munición". La pintura de plomo no tiene Ba+Sb en combinación esferoidal.',
-        custody: '💥 GSR positivo — 3 partículas esferoidales Pb+Ba+Sb confirmadas. SEM-EDS informe emitido. Indicio N° 013.',
+        custody: '💥 GSR positivo — 3 partículas esferoidales Pb+Ba+Sb confirmadas. SEM-EDS informe emitido. Indicio N° 013. Registrado en PRCC.',
         pts: 10
       },
       {
@@ -594,7 +595,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Transferencia secundaria de GSR:</strong> La posibilidad de transferencia secundaria (de una persona que disparó a otra por contacto) está documentada científicamente, pero los estudios muestran que la transferencia es cuantitativamente menor (1-5 partículas vs. docenas en un tirador). Un testimonio pericial honesto reconoce la posibilidad teórica y simultáneamente aporta los datos cuantitativos (número de partículas, distribución en manos, densidad) que permiten al juez evaluar el peso de la evidencia. Negar la posibilidad es científicamente incorrecto. Afirmar que es "la principal causa" también es incorrecto estadísticamente.',
-        custody: '⚖️ Testimonio experto completado — Transferencia secundaria reconocida y cuantificada. Dictamen final emitido.',
+        custody: '⚖️ Testimonio experto completado — Transferencia secundaria reconocida y cuantificada. Dictamen final emitido. Registrado en PRCC.',
         pts: 10
       }
     ],
@@ -611,7 +612,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Marco OSAC/SWGFAST para huellas de calidad marginal:</strong> Los estándares OSAC (NIST) y SWGFAST rechazan el dictamen basado en número de minucias o en score AFIS exclusivamente. El proceso ACE-V exige: (A) Análisis de calidad individual de cada minucia mediante el sistema GYRO (calidad buena/usable/confiable/observable); (C) Comparación con los rasgos de clase y subclase de la huella del sospechoso; (E) Evaluación del nivel de conclusión que los datos soportan; (V) Verificación ciega. Para huellas marginales, el dictamen más correcto puede ser "Inconclusive" documentado con rigor, lo que es científicamente más defendible que una identificación frágil.',
-        custody: '🔍 ACE-V con GYRO completado — 7 minucias evaluadas individualmente. Dictamen: Inconclusive por calidad insuficiente.',
+        custody: '🔍 ACE-V con GYRO completado — 7 minucias evaluadas individualmente. Dictamen: Inconclusive por calidad insuficiente. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -626,7 +627,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Interpretación de artefactos en STR:</strong> Drop-in y drop-out son fenómenos estocásticos de plantillas bajas en PCR. El "stutter" es el artefacto más común (pico n-4 pb del alelo principal), y si se confunde con alelo verdadero, sesga el LR. STRmix modela el stutter, pero el analista debe verificar manualmente que el pico marcado como "drop-in" no sea un stutter del alelo adyacente. Si se confirma artefacto, se excluye y se recalcula. El LR recalculado puede subir o bajar. Reportar el LR sin esta verificación es negligencia profesional. Descartar el resultado completo es excesivo si solo un locus está afectado.',
-        custody: '🧬 Revisión manual de artefactos STR completada. Drop-in confirmado como stutter. LR recalculado. Dictamen actualizado.',
+        custody: '🧬 Revisión manual de artefactos STR completada. Drop-in confirmado como stutter. LR recalculado. Dictamen actualizado. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -641,7 +642,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Microscopía confocal + correlación digital en balística:</strong> La microscopía confocal de barrido óptico genera mapas topográficos 3D de las estrías con resolución nanométrica, permitiendo comparar fragmentos de proyectil deformado que no serían comparables visualmente. El software CSAFE (Center for Statistics and Applications in Forensic Evidence) de NIST usa correlación cruzada de los perfiles de estrías y calcula estadísticamente cuántos mm de estría se necesitan para alcanzar diferentes umbrales de confianza. Esto permite emitir un nivel de conclusión formal ("Consistent" o "Inconclusive") incluso con 30% de superficie útil, superando el método visual tradicional.',
-        custody: '🔫 Microscopía confocal 3D realizada — Correlación CSAFE calculada. Umbral NIST NBIDE aplicado. Informe emitido.',
+        custody: '🔫 Microscopía confocal 3D realizada — Correlación CSAFE calculada. Umbral NIST NBIDE aplicado. Informe emitido. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -656,7 +657,7 @@ const SCENES = [
         ],
         correct: 2,
         fb: '<strong>Discriminación morfológica y dimensional GSR vs. pigmentos industriales:</strong> Los pigmentos de pintura automotriz que contienen Pb son en su mayoría cromato de Pb (amarillo/verde) y minio (Pb₃O₄, rojo). El Ba se usa como sulfato de bario (barita) como carga inerte. El Sb se usa en pinturas ignífugas. Sin embargo, la clave discriminante es: (1) Morfología: GSR es esferoidal (condensación desde gas); pigmentos son angulares o aciculares; (2) Tamaño: GSR 0.5-5µm; pigmentos > 10µm; (3) Sistema ternario: Ba-Sb-Pb en la MISMA partícula como sistema ternario con mapeo EDS es altamente específico de GSR. Los pigmentos de pintura raramente co-existen los tres en una sola partícula esferoidal.',
-        custody: '💥 Discriminación GSR/pigmento completada — Morfología esferoidal + EDS ternario Pb+Ba+Sb confirmados. Ind. N° 013.',
+        custody: '💥 Discriminación GSR/pigmento completada — Morfología esferoidal + EDS ternario Pb+Ba+Sb confirmados. Ind. N° 013. Registrado en PRCC.',
         pts: 20
       },
       {
@@ -671,7 +672,7 @@ const SCENES = [
         ],
         correct: 1,
         fb: '<strong>Doble respuesta pericial — Culpabilidad y sensibilidad de base de datos:</strong> (1) Al FISCAL: El LR cuantifica el peso de la evidencia, no la culpabilidad. El "teorema de Bayes" forense: LR multiplica la odds prior del juez sobre la culpabilidad del acusado para llegar a la odds posterior. La culpabilidad es determinación judicial, no pericial. (2) Al DEFENSOR: Es una objeción científicamente válida y el perito debe haberla anticipado. Reportar el LR para las 3-4 bases de datos poblacionales más relevantes para el caso (y mostrar que incluso en la base de datos más desfavorable el LR sigue siendo > 10⁹) demuestra la robustez de la conclusión y refuerza la credibilidad del perito.',
-        custody: '⚖️ Testimonio experto final completado. LR multi-poblacional reportado. Rol pericial definido. Caso 04 cerrado.',
+        custody: '⚖️ Testimonio experto final completado. LR multi-poblacional reportado. Rol pericial definido. Caso 04 cerrado. PRCC cerrada.',
         pts: 20
       }
     ]
@@ -885,8 +886,8 @@ const DETECTIVE_KIT = [
 //  CHATBOT KNOWLEDGE BASE
 // ──────────────────────────────────────────────
 const CHAT_KB = {
-  'cadena de custodia': '📋 <strong>Cadena de Custodia</strong><br>Es el registro cronológico ininterrumpido de todos los actos de recolección, embalaje, traslado, almacenamiento y análisis de una evidencia. Cada transferencia debe documentarse en el FOCAD-07 con hora, identificación del entregador y receptor, y estado del embalaje. Un eslabón roto no invalida automáticamente la evidencia, pero obliga a presentar documentación complementaria (bitácoras electrónicas, affidávits) para acreditar su integridad.',
-  'cadena custodia': '📋 <strong>Cadena de Custodia</strong><br>Es el registro cronológico ininterrumpido de todos los actos sobre una evidencia. Cada transferencia debe documentarse en el FOCAD-07. Un eslabón roto puede ser saneado con affidávits y registros electrónicos.',
+  'cadena de custodia': '📋 <strong>Cadena de Custodia</strong><br>Es el registro cronológico ininterrumpido de todos los actos de recolección, embalaje, traslado, almacenamiento y análisis de una evidencia. Cada transferencia debe documentarse en la PRCC (Planilla de Registro de Cadena de Custodia). Un eslabón roto no invalida automáticamente la evidencia, pero obliga a presentar documentación complementaria (bitácoras electrónicas, affidávits) para acreditar su integridad. (Art. 187 COPP y Manual Único 2017).',
+  'cadena custodia': '📋 <strong>Cadena de Custodia</strong><br>Es el registro cronológico ininterrumpido de todos los actos sobre una evidencia. Cada transferencia debe documentarse en la PRCC. Un eslabón roto puede ser saneado con affidávits y registros electrónicos.',
   'papel': '🛍️ <strong>Papel vs. Plástico en Embalaje</strong><br><strong>Bolsas de papel kraft:</strong> para toda evidencia biológica húmeda o seca (sangre, saliva, pelo, huesos). El papel permite que la humedad residual transpire, evitando la proliferación de hongos que degradan el ADN.<br><strong>Bolsas de plástico:</strong> solo para evidencia inorgánica seca (fragmentos metálicos, proyectiles, vidrios) o cuando se requiere sellado hermético para volátiles (acelerantes de incendio en lata metálica).',
   'bolsa plástico': '🛍️ <strong>Papel vs. Plástico</strong><br>Papel kraft para evidencia biológica (previene degradación de ADN). Plástico solo para inorgánica seca o volátiles en contenedor específico.',
   'embalaje': '🛍️ <strong>Embalaje Forense por Tipo de Evidencia</strong><br>• Biológica (sangre, pelo): papel kraft o sobre de papel<br>• Vidrios: papel kraft individual + caja rígida<br>• Arma blanca: caja rígida con bridas plásticas<br>• Proyectil: caja rígida con espuma de alta densidad<br>• Drogas/volátiles: frasco de vidrio ámbar hermético',
