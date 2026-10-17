@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <title>DETECTIVE: Simulador Táctico de Investigación Criminal | Cadena de Custodia</title>
-  <meta name="description" content="Simulador interactivo de investigación criminal para detectives. Elige escena, dificultad y procesa evidencia con rigor científico y procesal. Niveles Difícil y Experto.">
+  <title>DETECTIVE: Simulador Táctico de Investigación Criminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="detective-theme">
 
-<!-- ===== HEADER ===== -->
 <header class="forensic-header" id="main-header">
   <div class="header-left">
     <div class="case-badge">
@@ -30,241 +28,235 @@
       <div><span class="score-num" id="score-display">0</span><span class="score-max"> pts</span></div>
     </div>
     <div class="header-actions">
-      <button class="btn-custody-dossier" id="btn-custody-open" title="Libro de Cadena de Custodia">📋 CADENA DE CUSTODIA</button>
-      <button class="btn-tool-dossier" id="btn-tools-open" title="Kit del Detective">🧰 KIT DETECTIVE</button>
-      <button class="btn-icon" id="btn-print" title="Imprimir Dictamen">🖨️</button>
+      <button class="btn-custody-dossier" id="btn-custody-open">📋 CADENA DE CUSTODIA</button>
+      <button class="btn-tool-dossier" id="btn-tools-open">🧰 KIT DETECTIVE</button>
+      <button class="btn-icon" id="btn-print">🖨️</button>
     </div>
   </div>
 </header>
 
-<!-- STAGE NAV -->
 <nav class="stage-nav-bar" id="stage-nav">
   <div class="stage-step" id="nav-portada" onclick="goToScreen('portada')">🏠 Inicio</div>
   <div class="step-divider"></div>
-  <div class="stage-step" id="nav-escena">📍 Escena</div>
+  <div class="stage-step" id="nav-escena" onclick="goToScreen('escena')">📍 Escena</div>
   <div class="step-divider"></div>
-  <div class="stage-step" id="nav-dificultad">⚡ Dificultad</div>
+  <div class="stage-step" id="nav-escena3d" onclick="goToScreen('escena3d')">🔬 Escena 3D</div>
   <div class="step-divider"></div>
-  <div class="stage-step" id="nav-preguntas">🔎 Investigación</div>
+  <div class="stage-step" id="nav-dificultad" onclick="goToScreen('dificultad')">⚡ Dificultad</div>
   <div class="step-divider"></div>
-  <div class="stage-step" id="nav-dictamen">📄 Dictamen</div>
+  <div class="stage-step" id="nav-preguntas" onclick="goToScreen('preguntas')">🔎 Investigación</div>
+  <div class="step-divider"></div>
+  <div class="stage-step" id="nav-dictamen" onclick="goToScreen('dictamen')">📄 Dictamen</div>
 </nav>
 
-<!-- POLICE TAPE -->
 <div class="police-tape-bar" aria-hidden="true">
   <span class="tape-content">◆ POLICÍA – NO CRUZAR ◆ ESCENA DEL CRIMEN ◆ ÁREA FORENSE RESTRINGIDA ◆ DETECTIVE EN SERVICIO ◆ CADENA DE CUSTODIA ACTIVA ◆ EVIDENCE DO NOT CROSS ◆ ÁREA FORENSE RESTRINGIDA ◆ POLICÍA – NO CRUZAR ◆ ESCENA DEL CRIMEN ◆ ÁREA FORENSE RESTRINGIDA ◆ DETECTIVE EN SERVICIO ◆ CADENA DE CUSTODIA ACTIVA ◆ EVIDENCE DO NOT CROSS ◆ ÁREA FORENSE RESTRINGIDA ◆ POLICÍA – NO CRUZAR ◆ ESCENA DEL CRIMEN ◆ ÁREA FORENSE RESTRINGIDA ◆ DETECTIVE EN SERVICIO ◆</span>
 </div>
 
-<!-- ===== VIEWPORT ===== -->
 <main class="microsite-viewport">
 
-  <!-- ==================== PORTADA ==================== -->
+  <!-- PORTADA -->
   <section class="screen-view active" id="view-portada">
     <div class="portada-hero">
       <div class="portada-badge-top">🛡️ PROTOCOLO DE ACTUACIÓN CRIMINAL · UNIDAD ESPECIAL DE DETECTIVES</div>
       <h1 class="portada-title">Simulador <span>Táctico de</span><br>Investigación Criminal</h1>
       <p class="portada-lead">
-        Asume el rol de <strong>Detective Jefe</strong>. Elige la escena del crimen a investigar, selecciona tu nivel de dificultad y demuestra tu dominio del procedimiento forense, la cadena de custodia y los fundamentos científicos que hacen válida la evidencia ante un tribunal. Cada decisión incorrecta compromete el expediente.
+        Asume el rol de <strong>Detective Jefe</strong>. Elige la escena del crimen a investigar, selecciona tu nivel de dificultad y demuestra tu dominio del procedimiento forense, la cadena de custodia y los fundamentos científicos que hacen válida la evidencia ante un tribunal.
       </p>
       <div class="portada-hero-cta">
-        <button class="btn-primary-action" id="btn-start-mission" onclick="goToScreen('escena')">
-          🚨 INICIAR MISIÓN <span>→</span>
-        </button>
-        <button class="btn-secondary-action" id="btn-view-tutorial" onclick="openChatWithMessage('¿Cómo funciona el simulador? Dame una guía rápida de uso.')">
-          📖 ¿Cómo funciona?
-        </button>
+        <button class="btn-primary-action" onclick="goToScreen('escena')">🚨 INICIAR MISIÓN <span>→</span></button>
+        <button class="btn-secondary-action" onclick="openChatWithMessage('¿Cómo funciona el simulador?')">📖 ¿Cómo funciona?</button>
       </div>
       <div class="portada-stats-grid">
-        <div class="stat-pill">
-          <span style="font-size:2rem;">🗂️</span>
-          <div>
-            <div style="font-weight:800; font-size:1.15rem; color:#fff;">4 Escenas</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Seleccionables & combinables</div>
-          </div>
-        </div>
-        <div class="stat-pill">
-          <span style="font-size:2rem;">⚡</span>
-          <div>
-            <div style="font-weight:800; font-size:1.15rem; color:#fff;">2 Niveles</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Difícil · Experto</div>
-          </div>
-        </div>
-        <div class="stat-pill">
-          <span style="font-size:2rem;">❓</span>
-          <div>
-            <div style="font-weight:800; font-size:1.15rem; color:#fff;">40 Preguntas</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">20 por nivel de dificultad</div>
-          </div>
-        </div>
-        <div class="stat-pill">
-          <span style="font-size:2rem;">📷</span>
-          <div>
-            <div style="font-weight:800; font-size:1.15rem; color:#fff;">Imagen Propia</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Cada pregunta tiene su imagen</div>
-          </div>
-        </div>
-        <div class="stat-pill">
-          <span style="font-size:2rem;">📋</span>
-          <div>
-            <div style="font-weight:800; font-size:1.15rem; color:#fff;">Cadena de Custodia</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Registro forense FOCAD-07 en tiempo real</div>
-          </div>
-        </div>
+        <div class="stat-pill"><span style="font-size:2rem;">🗂️</span><div><div style="font-weight:800; font-size:1.15rem; color:#fff;">4 Escenas</div><div style="font-size:0.8rem; color:var(--text-muted);">Seleccionables & combinables</div></div></div>
+        <div class="stat-pill"><span style="font-size:2rem;">⚡</span><div><div style="font-weight:800; font-size:1.15rem; color:#fff;">2 Niveles</div><div style="font-size:0.8rem; color:var(--text-muted);">Difícil · Experto</div></div></div>
+        <div class="stat-pill"><span style="font-size:2rem;">❓</span><div><div style="font-weight:800; font-size:1.15rem; color:#fff;">40 Preguntas</div><div style="font-size:0.8rem; color:var(--text-muted);">20 por nivel</div></div></div>
+        <div class="stat-pill"><span style="font-size:2rem;">📷</span><div><div style="font-weight:800; font-size:1.15rem; color:#fff;">Imagen por Pregunta</div><div style="font-size:0.8rem; color:var(--text-muted);">Con fallback SVG automático</div></div></div>
+        <div class="stat-pill"><span style="font-size:2rem;">📋</span><div><div style="font-weight:800; font-size:1.15rem; color:#fff;">Cadena de Custodia</div><div style="font-size:0.8rem; color:var(--text-muted);">Registro FOCAD-07 en tiempo real</div></div></div>
       </div>
 
       <div class="scene-cards-grid" style="margin-bottom:1.5rem;">
         <div class="preview-card">
-          <div class="preview-card-img-box"><img class="preview-card-img" src="assets/burglary.png" alt="Escena de robo en residencia" loading="lazy"></div>
-          <div class="preview-card-content">
-            <span class="card-tag">CASO 01</span>
-            <div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Robo en Residencia</div>
-            <p style="font-size:0.82rem; color:var(--text-muted);">Ingreso forzado, huellas latentes, manchas biológicas y vidrios fracturados. Procesamiento interior/exterior.</p>
-          </div>
+          <div class="preview-card-img-box"><img class="preview-card-img" data-scene="Robo en Residencia" src="assets/burglary.png" alt="Robo" loading="lazy"></div>
+          <div class="preview-card-content"><span class="card-tag">CASO 01</span><div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Robo en Residencia</div><p style="font-size:0.82rem; color:var(--text-muted);">Ingreso forzado, huellas latentes, manchas biológicas y vidrios fracturados.</p></div>
         </div>
         <div class="preview-card">
-          <div class="preview-card-img-box"><img class="preview-card-img" src="assets/homicide_park.png" alt="Escena de homicidio en parque" loading="lazy"></div>
-          <div class="preview-card-content">
-            <span class="card-tag">CASO 02</span>
-            <div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Homicidio en Parque</div>
-            <p style="font-size:0.82rem; color:var(--text-muted);">Cadáver en área abierta, pisadas en barro, arma blanca y pelo de sospechoso. Levantamiento de cadáver.</p>
-          </div>
+          <div class="preview-card-img-box"><img class="preview-card-img" data-scene="Homicidio en Parque" src="assets/homicide_park.png" alt="Homicidio" loading="lazy"></div>
+          <div class="preview-card-content"><span class="card-tag">CASO 02</span><div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Homicidio en Parque</div><p style="font-size:0.82rem; color:var(--text-muted);">Cadáver en área abierta, pisadas en barro, arma blanca y pelo de sospechoso.</p></div>
         </div>
         <div class="preview-card">
-          <div class="preview-card-img-box"><img class="preview-card-img" src="assets/traffic_accident.png" alt="Escena de siniestro vial" loading="lazy"></div>
-          <div class="preview-card-content">
-            <span class="card-tag">CASO 03</span>
-            <div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Siniestro Vial Doloso</div>
-            <p style="font-size:0.82rem; color:var(--text-muted);">Colisión en calzada, huellas de frenada, transferencia de pintura y dosaje etílico del conductor.</p>
-          </div>
+          <div class="preview-card-img-box"><img class="preview-card-img" data-scene="Siniestro Vial Doloso" src="assets/traffic_accident.png" alt="Siniestro" loading="lazy"></div>
+          <div class="preview-card-content"><span class="card-tag">CASO 03</span><div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Siniestro Vial Doloso</div><p style="font-size:0.82rem; color:var(--text-muted);">Colisión en calzada, huellas de frenada, transferencia de pintura y dosaje etílico.</p></div>
         </div>
         <div class="preview-card highlight-lab">
-          <div class="preview-card-img-box"><img class="preview-card-img" src="assets/forensic_lab.png" alt="Laboratorio forense" loading="lazy"></div>
-          <div class="preview-card-content">
-            <span class="card-tag" style="background:rgba(6,182,212,0.15); color:var(--color-cyan-bright); border-color:var(--color-cyan);">CASO 04</span>
-            <div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Análisis en Laboratorio</div>
-            <p style="font-size:0.82rem; color:var(--text-muted);">AFIS biométrico, perfiles STR de ADN, balística comparativa, GSR por SEM-EDS y testimonio experto.</p>
-          </div>
+          <div class="preview-card-img-box"><img class="preview-card-img" data-scene="Análisis en Laboratorio" src="assets/forensic_lab.png" alt="Laboratorio" loading="lazy"></div>
+          <div class="preview-card-content"><span class="card-tag" style="background:rgba(6,182,212,0.15); color:var(--color-cyan-bright); border-color:var(--color-cyan);">CASO 04</span><div style="font-weight:800; color:#fff; margin-bottom:0.3rem;">Análisis en Laboratorio</div><p style="font-size:0.82rem; color:var(--text-muted);">AFIS biométrico, perfiles STR de ADN, balística comparativa, GSR por SEM-EDS.</p></div>
         </div>
       </div>
 
       <div class="rules-card">
         <h3 style="font-size:0.95rem; font-weight:800; color:var(--color-cyan-bright); margin-bottom:0.75rem; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.08em;">📜 Protocolo de Actuación</h3>
         <div class="rules-grid">
-          <div>🔵 <strong style="color:#fff;">Selecciona escenas</strong> — Elige 1 a 4 casos para investigar en la sesión.</div>
-          <div>🟡 <strong style="color:#fff;">Elige dificultad</strong> — Difícil (procedimental) o Experto (técnico-científico).</div>
-          <div>🔴 <strong style="color:#fff;">Responde con rigor</strong> — Solo una opción es correcta bajo los estándares vigentes.</div>
-          <div>🟢 <strong style="color:#fff;">Monitorea la custodia</strong> — Cada acierto refuerza el expediente; los errores generan alertas.</div>
-          <div>🔵 <strong style="color:#fff;">Consulta al Inspector IA</strong> — El chatbot resuelve dudas técnicas durante la misión.</div>
-          <div>⬜ <strong style="color:#fff;">Genera tu Dictamen</strong> — Al final obtienes tu calificación forense oficial.</div>
+          <div>🔵 <strong style="color:#fff;">Selecciona escenas</strong> — Elige 1 a 4 casos.</div>
+          <div>🟡 <strong style="color:#fff;">Elige dificultad</strong> — Difícil o Experto.</div>
+          <div>🔴 <strong style="color:#fff;">Responde con rigor</strong> — Solo una opción es correcta.</div>
+          <div>🟢 <strong style="color:#fff;">Monitorea la custodia</strong> — Cada acierto refuerza el expediente.</div>
+          <div>🔵 <strong style="color:#fff;">Consulta al Inspector IA</strong> — Resuelve dudas técnicas.</div>
+          <div>⬜ <strong style="color:#fff;">Genera tu Dictamen</strong> — Calificación forense oficial.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== ESCENA SELECTION ==================== -->
+  <!-- ESCENA 3D -->
+  <section class="screen-view" id="view-escena3d">
+    <div class="scene3d-wrapper">
+      <div class="scene3d-header">
+        <h2 class="screen-title">🔬 Escena del Crimen Interactiva</h2>
+        <p class="screen-subtitle">Arrastra las herramientas desde tu maletín para analizar la escena. Coloca los marcadores de evidencia.</p>
+        <div class="scene3d-controls">
+          <button class="btn-secondary-action" onclick="reset3DScene()">↺ Reiniciar Escena</button>
+          <button class="btn-primary-action" onclick="finish3DInvestigation()">✅ Finalizar Análisis</button>
+        </div>
+      </div>
+      <div class="scene3d-container" id="scene3d-container">
+        <div class="scene3d-room">
+          <div class="room-floor"></div>
+          <div class="room-wall-left"></div>
+          <div class="room-wall-right"></div>
+          <div class="room-wall-back"></div>
+          <div class="room-ceiling"></div>
+          <div class="cadaver" id="cadaver" onclick="inspectCadaver(event)">
+            <div class="cadaver-head"></div>
+            <div class="cadaver-body">
+              <div class="cadaver-wound">
+                <div class="blood-pool"></div>
+                <div class="blood-splatter"></div>
+                <div class="blood-splatter" style="top: -15px; left: 20px; width: 8px; height: 8px;"></div>
+                <div class="blood-splatter" style="top: 10px; left: -25px; width: 12px; height: 12px;"></div>
+              </div>
+            </div>
+            <div class="cadaver-arm-left"></div>
+            <div class="cadaver-arm-right"></div>
+            <div class="cadaver-leg-left"></div>
+            <div class="cadaver-leg-right"></div>
+          </div>
+          <div class="scene-object weapon" id="obj-weapon" onclick="inspectObject('weapon', event)"><span>🔫</span><div class="object-label">Arma de fuego</div></div>
+          <div class="scene-object phone" id="obj-phone" onclick="inspectObject('phone', event)"><span>📱</span><div class="object-label">Teléfono móvil</div></div>
+          <div class="scene-object glass" id="obj-glass" onclick="inspectObject('glass', event)"><span>🥃</span><div class="object-label">Vaso roto</div></div>
+          <div class="scene-object shell" id="obj-shell" onclick="inspectObject('shell', event)"><span>💊</span><div class="object-label">Vaina de bala</div></div>
+          <div class="scene-object footprint" id="obj-footprint" onclick="inspectObject('footprint', event)"><span>👣</span><div class="object-label">Huella de zapato</div></div>
+          <div class="evidence-marker" id="marker-1" style="top: 20%; left: 30%;">1</div>
+          <div class="evidence-marker" id="marker-2" style="top: 50%; left: 60%;">2</div>
+          <div class="evidence-marker" id="marker-3" style="top: 70%; left: 40%;">3</div>
+          <div class="interactive-hand" id="interactive-hand">🖐️</div>
+        </div>
+      </div>
+      <div class="toolkit-panel">
+        <h3>🧰 Maletín Forense</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Arrastra una herramienta sobre la escena para usarla.</p>
+        <div class="toolkit-grid">
+          <div class="tool-item" draggable="true" data-tool="lupa" ondragstart="dragTool(event)"><span>🔍</span><div>Lupa</div></div>
+          <div class="tool-item" draggable="true" data-tool="hisopo" ondragstart="dragTool(event)"><span>🧬</span><div>Hisopo ADN</div></div>
+          <div class="tool-item" draggable="true" data-tool="polvo" ondragstart="dragTool(event)"><span>🖐️</span><div>Polvo Dactilar</div></div>
+          <div class="tool-item" draggable="true" data-tool="camara" ondragstart="dragTool(event)"><span>📷</span><div>Cámara</div></div>
+        </div>
+      </div>
+      <div class="scene3d-info-panel">
+        <h4 id="info-title">🔎 Esperando acción...</h4>
+        <p id="info-text">Haz clic en un objeto de la escena o arrastra una herramienta sobre él para investigar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECCIÓN DE ESCENA -->
   <section class="screen-view" id="view-escena">
     <div class="scene-select-wrapper">
       <h2 class="screen-title">📍 Selección de Escena del Crimen</h2>
-      <p class="screen-subtitle">Elige uno o varios casos para investigar. Puedes seleccionar todas las escenas para una sesión completa o elegir casos específicos según tu área de especialización.</p>
-      <div class="scene-select-grid" id="scene-select-grid">
-        <!-- Se genera dinámicamente -->
-      </div>
+      <p class="screen-subtitle">Elige uno o varios casos para investigar.</p>
+      <div class="scene-select-grid" id="scene-select-grid"></div>
       <div class="scene-select-meta">
-        <div>
-          <span class="scenes-selected-counter" id="scenes-counter">0 de 4 seleccionadas</span>
-        </div>
+        <div><span class="scenes-selected-counter" id="scenes-counter">0 de 4 seleccionadas</span></div>
         <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
           <button class="btn-select-all" id="btn-select-all-scenes">Seleccionar todas</button>
           <button class="btn-secondary-action" onclick="goToScreen('portada')" style="padding:0.45rem 1rem; font-size:0.85rem;">← Volver</button>
-          <button class="btn-primary-action" id="btn-proceed-to-difficulty" onclick="proceedToDifficulty()" disabled style="padding:0.75rem 1.5rem; font-size:0.9rem; opacity:0.5; cursor:not-allowed;">
-            Continuar → Seleccionar Dificultad
-          </button>
+          <button class="btn-primary-action" id="btn-proceed-to-difficulty" onclick="proceedToDifficulty()" disabled style="padding:0.75rem 1.5rem; font-size:0.9rem; opacity:0.5; cursor:not-allowed;">Continuar → Dificultad</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== DIFFICULTY SELECTION ==================== -->
+  <!-- DIFICULTAD -->
   <section class="screen-view" id="view-dificultad">
     <div class="difficulty-wrapper">
       <h2 class="screen-title">⚡ Nivel de Dificultad</h2>
-      <p class="screen-subtitle">Elige el nivel que corresponde a tu formación. El nivel <strong style="color:var(--color-hard);">Difícil</strong> evalúa procedimientos y protocolos. El nivel <strong style="color:var(--color-expert);">Experto</strong> exige razonamiento técnico-científico profundo bajo estándares internacionales.</p>
+      <p class="screen-subtitle">Elige el nivel que corresponde a tu formación.</p>
       <div class="difficulty-grid">
-        <div class="difficulty-card hard" id="diff-card-hard" onclick="selectDifficulty('dificil')">
+        <div class="difficulty-card hard" onclick="selectDifficulty('dificil')">
           <div class="diff-icon">🔥</div>
           <div class="diff-label">NIVEL DIFÍCIL</div>
           <div class="diff-title">Difícil</div>
-          <div class="diff-desc">Preguntas procedimentales con contexto explicado. Distractores evidentes pero razonables. Ideal para estudiantes avanzados de criminología y policías en formación.</div>
+          <div class="diff-desc">Preguntas procedimentales con contexto explicado.</div>
           <div class="diff-features">
             <div class="diff-feature">Protocolos de recolección y embalaje</div>
             <div class="diff-feature">Cadena de custodia y documentación</div>
-            <div class="diff-feature">4 opciones con 2 plausibles</div>
             <div class="diff-feature">10 pts por respuesta correcta</div>
           </div>
           <button class="diff-select-btn">🔥 Elegir DIFÍCIL</button>
         </div>
-        <div class="difficulty-card expert" id="diff-card-expert" onclick="selectDifficulty('experto')">
+        <div class="difficulty-card expert" onclick="selectDifficulty('experto')">
           <div class="diff-icon">💀</div>
           <div class="diff-label">NIVEL EXPERTO</div>
           <div class="diff-title">Experto</div>
-          <div class="diff-desc">Preguntas técnico-científicas con 4 opciones todas plausibles. Solo una es correcta bajo ASTM, ISFG y estándar Daubert. Para detectives en ejercicio y peritos certificados.</div>
+          <div class="diff-desc">Preguntas técnico-científicas bajo estándares internacionales.</div>
           <div class="diff-features">
             <div class="diff-feature">Bioquímica forense, SEM-EDS, STR</div>
             <div class="diff-feature">Escenarios con contaminación y mezclas</div>
-            <div class="diff-feature">4 opciones científicamente plausibles</div>
             <div class="diff-feature">20 pts por respuesta correcta</div>
           </div>
           <button class="diff-select-btn">💀 Elegir EXPERTO</button>
         </div>
       </div>
-      <div style="text-align:center;">
-        <button class="btn-secondary-action" onclick="goToScreen('escena')">← Volver a Selección de Escena</button>
-      </div>
+      <div style="text-align:center;"><button class="btn-secondary-action" onclick="goToScreen('escena')">← Volver</button></div>
     </div>
   </section>
 
-  <!-- ==================== QUESTION SCREEN ==================== -->
+  <!-- PREGUNTAS -->
   <section class="screen-view" id="view-preguntas">
-    <div id="scene-header-question" class="scene-header-box">
+    <div class="scene-header-box">
       <div>
         <span class="scene-badge-pill" id="scene-case-badge">CASO 01</span>
-        <div style="font-size:1.15rem; font-weight:800; color:#fff;" id="scene-title-display">Nombre de la Escena</div>
-        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem; font-family:var(--font-mono);" id="scene-subtitle-display">Descripción contextual</div>
+        <div style="font-size:1.15rem; font-weight:800; color:#fff;" id="scene-title-display">Escena</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem; font-family:var(--font-mono);" id="scene-subtitle-display">Descripción</div>
       </div>
-      <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
-        <div class="question-progress-indicator">
-          <span style="font-size:1.2rem; font-weight:900; color:var(--color-cyan-bright);" id="q-current-num">1</span>
-          <span style="color:var(--text-muted);">/</span>
-          <span style="color:var(--text-muted);" id="q-total-num">5</span>
-          <span style="font-size:0.72rem; color:var(--text-muted); margin-left:0.3rem;">preguntas</span>
-        </div>
+      <div class="question-progress-indicator">
+        <span style="font-size:1.2rem; font-weight:900; color:var(--color-cyan-bright);" id="q-current-num">1</span>
+        <span style="color:var(--text-muted);">/</span>
+        <span style="color:var(--text-muted);" id="q-total-num">5</span>
       </div>
     </div>
 
-    <!-- QUESTION IMAGE PANEL -->
     <div class="question-image-panel" id="question-image-panel">
-      <canvas id="question-canvas" style="width:100%; height:320px; display:block;"></canvas>
       <div class="q-img-hud" id="q-img-hud">
         <div class="q-img-hud-top">
           <span class="hud-pill" id="hud-scene-name">ESCENA</span>
           <span class="hud-pill" id="hud-diff-pill">DIFÍCIL</span>
         </div>
         <div class="q-img-hud-bottom">
-          <span class="hud-pill" style="font-size:0.68rem; opacity:0.85;" id="hud-evidence-tag">EVIDENCIA FORENSE</span>
-          <span class="hud-pill" style="font-size:0.68rem; opacity:0.85;" id="hud-q-counter">P.1/5</span>
+          <span class="hud-pill" id="hud-evidence-tag">EVIDENCIA FORENSE</span>
+          <span class="hud-pill" id="hud-q-counter">P.1/5</span>
         </div>
       </div>
     </div>
 
-    <!-- QUESTION CARD -->
     <div class="question-card" id="question-card">
-      <div class="question-phase-badge" id="question-phase-badge">FASE 1 · INSPECCIÓN OCULAR</div>
-      <div class="question-statement" id="question-text">Cargando pregunta...</div>
+      <div class="question-phase-badge" id="question-phase-badge">FASE 1</div>
+      <div class="question-statement" id="question-text">Cargando...</div>
       <div class="options-container" id="options-container"></div>
       <div class="feedback-box hidden" id="feedback-box">
         <div class="feedback-header">
           <span class="feedback-status-badge" id="feedback-status">✓ CORRECTO</span>
-          <span class="feedback-points-tag" id="feedback-points" style="color:var(--color-success);">+10 PTS</span>
+          <span class="feedback-points-tag" id="feedback-points">+10 PTS</span>
         </div>
         <div class="feedback-body" id="feedback-body"></div>
         <div class="custody-impact-notice" id="custody-notice" style="display:none;"></div>
@@ -275,10 +267,10 @@
     </div>
   </section>
 
-  <!-- ==================== SCENE RESULT ==================== -->
+  <!-- RESULTADO -->
   <section class="screen-view" id="view-resultado">
     <div class="result-card-container">
-      <h2 style="font-size:1.6rem; font-weight:900; color:#fff; margin-bottom:1.5rem;" id="result-scene-title">Resultado de la Escena</h2>
+      <h2 style="font-size:1.6rem; font-weight:900; color:#fff; margin-bottom:1.5rem;" id="result-scene-title">Resultado</h2>
       <div class="result-score-overview">
         <div class="score-card-highlight">
           <div style="font-size:0.78rem; font-family:var(--font-mono); color:var(--color-cyan-bright); margin-bottom:0.4rem; text-transform:uppercase;">Puntuación de Escena</div>
@@ -294,19 +286,17 @@
       <div id="result-checklist-area" style="margin-bottom:2rem;"></div>
       <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:flex-end;">
         <button class="btn-secondary-action" onclick="goToScreen('dictamen')">Ver Dictamen Final</button>
-        <button class="btn-primary-action" id="btn-next-scene" onclick="loadNextScene()">
-          Siguiente Escena →
-        </button>
+        <button class="btn-primary-action" id="btn-next-scene" onclick="loadNextScene()">Siguiente Escena →</button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== FINAL DICTAMEN ==================== -->
+  <!-- DICTAMEN -->
   <section class="screen-view" id="view-dictamen">
-    <div class="final-report-wrapper" id="dictamen-content">
+    <div class="final-report-wrapper">
       <div class="final-official-header">
         <div>
-          <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">DICTAMEN PERICIAL OFICIAL · FORMULARIO FOCAD-08</div>
+          <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">DICTAMEN PERICIAL OFICIAL · FOCAD-08</div>
           <div style="font-size:1.5rem; font-weight:900; color:#fff;">Informe Final del Detective</div>
           <div style="font-family:var(--font-mono); font-size:0.82rem; color:var(--text-muted); margin-top:0.3rem;" id="dictamen-date"></div>
         </div>
@@ -333,12 +323,10 @@
         </div>
       </div>
       <h3 style="font-family:var(--font-mono); color:var(--color-cyan-bright); font-size:0.88rem; text-transform:uppercase; margin-bottom:1rem;">📋 Desglose por Escena</h3>
-      <table class="forensic-table" id="final-scene-table">
+      <table class="forensic-table">
         <thead><tr><th>CASO</th><th>ESCENA</th><th>DIFICULTAD</th><th>CORRECTAS</th><th>PUNTAJE</th></tr></thead>
         <tbody id="final-scene-tbody"></tbody>
       </table>
-      <h3 style="font-family:var(--font-mono); color:var(--color-cyan-bright); font-size:0.88rem; text-transform:uppercase; margin-bottom:1rem;">🔬 Instrumentos Científicos Utilizados</h3>
-      <div class="instrument-cards-grid" id="instruments-grid"></div>
       <div style="margin-top:2.2rem; display:flex; gap:1rem; justify-content:flex-end; flex-wrap:wrap;">
         <button class="btn-secondary-action" onclick="resetSimulator()">↺ Nueva Misión</button>
         <button class="btn-icon" onclick="window.print()">🖨️ Imprimir Dictamen</button>
@@ -346,54 +334,49 @@
     </div>
   </section>
 
-</main><!-- /.microsite-viewport -->
+</main>
 
-<!-- ===================== CUSTODY MODAL ===================== -->
+<!-- MODAL CADENA DE CUSTODIA -->
 <div class="forensic-modal-overlay hidden" id="custody-modal">
   <div class="forensic-modal-window">
     <div class="modal-header">
       <div>
         <div style="font-weight:800; font-size:1.05rem; color:#fff;">📋 Libro de Cadena de Custodia</div>
-        <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan);">FORMULARIO FOCAD-07 · REGISTRO ELECTRÓNICO DE EVIDENCIAS</div>
+        <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan);">FORMULARIO FOCAD-07</div>
       </div>
-      <button class="btn-close-modal" onclick="closeCustodyModal()" aria-label="Cerrar">×</button>
+      <button class="btn-close-modal" onclick="closeCustodyModal()">×</button>
     </div>
-    <div class="modal-body-scroll" id="custody-modal-body">
+    <div class="modal-body-scroll">
       <div class="custody-sheet-banner">
         <div>
-          <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:var(--color-cyan-bright);">UNIDAD DE HOMICIDIOS Y CRIMINALÍSTICA — REGISTRO UNIFICADO</div>
-          <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="custody-folio-label">Folio: FOCAD-2026-001</div>
+          <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:var(--color-cyan-bright);">UNIDAD DE CRIMINALÍSTICA — REGISTRO UNIFICADO</div>
+          <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="custody-folio-label">Folio: FOCAD</div>
         </div>
-        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.3rem;">
-          <span class="tamper-tape-graphic">🔴 PRECINTO ACTIVO</span>
-          <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="custody-timestamp-label">Fecha: --</span>
-        </div>
+        <span class="tamper-tape-graphic">🔴 PRECINTO ACTIVO</span>
       </div>
       <div id="custody-entries-list"></div>
     </div>
   </div>
 </div>
 
-<!-- ===================== TOOLS MODAL ===================== -->
+<!-- MODAL KIT -->
 <div class="forensic-modal-overlay hidden" id="tools-modal">
   <div class="forensic-modal-window">
     <div class="modal-header">
       <div>
         <div style="font-weight:800; font-size:1.05rem; color:#fff;">🧰 Kit del Detective</div>
-        <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan);">DOTACIÓN FORENSE TÁCTICA — UNIDAD ESPECIAL</div>
+        <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--color-cyan);">DOTACIÓN FORENSE TÁCTICA</div>
       </div>
-      <button class="btn-close-modal" onclick="closeToolsModal()" aria-label="Cerrar">×</button>
+      <button class="btn-close-modal" onclick="closeToolsModal()">×</button>
     </div>
     <div class="modal-body-scroll">
-      <img src="assets/detective_kit.png" alt="Kit del detective forense" style="width:100%; border-radius:10px; object-fit:cover; max-height:240px; margin-bottom:0.5rem;">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:0.85rem; margin-top:0.5rem;" id="tools-kit-grid">
-      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:0.85rem;" id="tools-kit-grid"></div>
     </div>
   </div>
 </div>
 
-<!-- ===================== CHATBOT ===================== -->
-<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Inspector Detective IA" aria-label="Abrir Inspector IA">🤖</button>
+<!-- CHATBOT -->
+<button class="chat-fab" onclick="toggleChat()">🤖</button>
 <div class="chat-window" id="chat-window">
   <div class="chat-header">
     <div class="chat-avatar">🤖</div>
@@ -401,19 +384,19 @@
       <div class="chat-header-name">Inspector Detective IA</div>
       <div class="chat-header-status">En línea · Análisis forense activo</div>
     </div>
-    <button class="chat-close" onclick="toggleChat()" aria-label="Cerrar chat">×</button>
+    <button class="chat-close" onclick="toggleChat()">×</button>
   </div>
   <div class="chat-body" id="chat-body"></div>
   <div class="chat-quick-actions">
     <button class="chat-quick-btn" onclick="askChat('¿Qué es la cadena de custodia?')">📋 Cadena custodia</button>
-    <button class="chat-quick-btn" onclick="askChat('¿Cuándo usar bolsa de papel vs plástico?')">🛍️ Embalaje</button>
+    <button class="chat-quick-btn" onclick="askChat('¿Cuándo usar papel vs plástico?')">🛍️ Embalaje</button>
     <button class="chat-quick-btn" onclick="askChat('¿Qué es el estándar Daubert?')">⚖️ Daubert</button>
     <button class="chat-quick-btn" onclick="askChat('¿Cómo funciona el AFIS?')">🔍 AFIS</button>
-    <button class="chat-quick-btn" onclick="askChat('¿Qué es GSR y cómo se analiza?')">💥 GSR</button>
+    <button class="chat-quick-btn" onclick="askChat('¿Qué es GSR?')">💥 GSR</button>
   </div>
   <div class="chat-input-bar">
-    <input class="chat-input" id="chat-input" type="text" placeholder="Pregunta táctica al Inspector IA..." onkeydown="if(event.key==='Enter') sendChatMessage()">
-    <button class="chat-send" onclick="sendChatMessage()" aria-label="Enviar">➤</button>
+    <input class="chat-input" id="chat-input" type="text" placeholder="Pregunta al Inspector IA..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+    <button class="chat-send" onclick="sendChatMessage()">➤</button>
   </div>
 </div>
 
